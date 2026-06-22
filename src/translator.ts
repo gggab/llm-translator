@@ -8,10 +8,14 @@ export interface TranslateOptions {
 /**
  * 把整篇 Markdown 翻译成目标语言。
  * 长文本会按段落切块,逐块翻译后再拼接,避免超出模型上下文/输出长度。
+ *
+ * apiKey 由调用方从加密的 SecretStorage 中取出后传入,不再从 settings 读取,
+ * 避免 Key 以明文形式留存在 settings.json 中。
  */
 export async function translateMarkdown(
   source: string,
   config: vscode.WorkspaceConfiguration,
+  apiKey: string,
   opts: TranslateOptions = {}
 ): Promise<string> {
   const provider = config.get<string>('provider', 'deepseek');
@@ -24,7 +28,7 @@ export async function translateMarkdown(
     if (opts.signal?.aborted) {
       throw new Error('Cancelled');
     }
-    const translated = await callProvider(provider, config, targetLanguage, chunks[i], opts.signal);
+    const translated = await callProvider(provider, config, apiKey, targetLanguage, chunks[i], opts.signal);
     results.push(translated);
     opts.onProgress?.(i + 1, chunks.length);
   }
@@ -36,6 +40,7 @@ export async function translateMarkdown(
 async function callProvider(
   provider: string,
   config: vscode.WorkspaceConfiguration,
+  apiKey: string,
   targetLanguage: string,
   text: string,
   signal?: AbortSignal
@@ -47,12 +52,12 @@ async function callProvider(
 
   switch (provider) {
     case 'claude':
-      return callClaude(config, systemPrompt, text, signal);
+      return callClaude(config, apiKey, systemPrompt, text, signal);
     case 'openai':
-      return callOpenAICompatible(config, 'openai', systemPrompt, text, signal);
+      return callOpenAICompatible(config, 'openai', apiKey, systemPrompt, text, signal);
     case 'deepseek':
     default:
-      return callOpenAICompatible(config, 'deepseek', systemPrompt, text, signal);
+      return callOpenAICompatible(config, 'deepseek', apiKey, systemPrompt, text, signal);
   }
 }
 
@@ -60,16 +65,16 @@ async function callProvider(
 async function callOpenAICompatible(
   config: vscode.WorkspaceConfiguration,
   key: 'openai' | 'deepseek',
+  apiKey: string,
   systemPrompt: string,
   text: string,
   signal?: AbortSignal
 ): Promise<string> {
-  const apiKey = config.get<string>(`${key}.apiKey`, '').trim();
   const model = config.get<string>(`${key}.model`, '');
   const baseUrl = config.get<string>(`${key}.baseUrl`, '').replace(/\/+$/, '');
 
   if (!apiKey) {
-    throw new Error(`No API key configured for ${key}. Please set llmTranslator.${key}.apiKey in settings.`);
+    throw new Error(`No API key configured for ${key}. Run the "LLM Translator: Set API Key" command.`);
   }
 
   const res = await fetch(`${baseUrl}/v1/chat/completions`, {
@@ -104,16 +109,16 @@ async function callOpenAICompatible(
 /** Anthropic Claude 使用 /v1/messages 接口。 */
 async function callClaude(
   config: vscode.WorkspaceConfiguration,
+  apiKey: string,
   systemPrompt: string,
   text: string,
   signal?: AbortSignal
 ): Promise<string> {
-  const apiKey = config.get<string>('claude.apiKey', '').trim();
   const model = config.get<string>('claude.model', 'claude-sonnet-4-6');
   const baseUrl = config.get<string>('claude.baseUrl', 'https://api.anthropic.com').replace(/\/+$/, '');
 
   if (!apiKey) {
-    throw new Error('No API key configured for Claude. Please set llmTranslator.claude.apiKey in settings.');
+    throw new Error('No API key configured for Claude. Run the "LLM Translator: Set API Key" command.');
   }
 
   const res = await fetch(`${baseUrl}/v1/messages`, {

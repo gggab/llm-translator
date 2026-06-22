@@ -3,15 +3,14 @@
   "category": "LLM Translator",
   "command.openPreview.title": "打开翻译预览",
   "command.refresh.title": "重新翻译",
+  "command.setApiKey.title": "设置 API Key",
+  "command.clearApiKey.title": "清除 API Key",
   "config.provider": "选择用于翻译的大模型服务商。",
   "config.targetLanguage": "翻译的目标语言,例如:中文 / English / العربية(阿拉伯语)。",
-  "config.deepseek.apiKey": "DeepSeek API Key。获取地址:https://platform.deepseek.com",
   "config.deepseek.model": "DeepSeek 模型名称。当前可用:`deepseek-v4-flash`(非思考,适合翻译)、`deepseek-v4-pro`(推理)。旧名 `deepseek-chat` / `deepseek-reasoner` 将于 2026/07/24 弃用。",
   "config.deepseek.baseUrl": "DeepSeek API Base URL。",
-  "config.openai.apiKey": "OpenAI (ChatGPT) API Key。",
   "config.openai.model": "OpenAI 模型名称。推荐:`gpt-4.1-mini`(性价比)、`gpt-4.1`、`gpt-5-mini` / `gpt-5`(更强)。",
   "config.openai.baseUrl": "OpenAI API Base URL(可指向兼容代理)。",
-  "config.claude.apiKey": "Anthropic (Claude) API Key。",
   "config.claude.model": "Claude 模型名称。推荐:`claude-sonnet-4-6`(均衡,适合翻译)、`claude-opus-4-8`(最强)、`claude-haiku-4-5`(最快最便宜)。",
   "config.claude.baseUrl": "Anthropic API Base URL。"
 }

@@ -2,7 +2,7 @@
   "name": "llm-markdown-translator",
   "displayName": "LLM Markdown Translator",
   "description": "%extension.description%",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "publisher": "wentao-liao",
   "license": "MIT",
   "icon": "images/icon.png",
@@ -43,6 +43,16 @@
         "title": "%command.refresh.title%",
         "category": "%category%",
         "icon": "$(refresh)"
+      },
+      {
+        "command": "llmTranslator.setApiKey",
+        "title": "%command.setApiKey.title%",
+        "category": "%category%"
+      },
+      {
+        "command": "llmTranslator.clearApiKey",
+        "title": "%command.clearApiKey.title%",
+        "category": "%category%"
       }
     ],
     "menus": {
@@ -86,11 +96,6 @@
           "default": "中文",
           "description": "%config.targetLanguage%"
         },
-        "llmTranslator.deepseek.apiKey": {
-          "type": "string",
-          "default": "",
-          "markdownDescription": "%config.deepseek.apiKey%"
-        },
         "llmTranslator.deepseek.model": {
           "type": "string",
           "default": "deepseek-v4-flash",
@@ -101,11 +106,6 @@
           "default": "https://api.deepseek.com",
           "description": "%config.deepseek.baseUrl%"
         },
-        "llmTranslator.openai.apiKey": {
-          "type": "string",
-          "default": "",
-          "markdownDescription": "%config.openai.apiKey%"
-        },
         "llmTranslator.openai.model": {
           "type": "string",
           "default": "gpt-4.1-mini",
@@ -115,11 +115,6 @@
           "type": "string",
           "default": "https://api.openai.com",
           "description": "%config.openai.baseUrl%"
-        },
-        "llmTranslator.claude.apiKey": {
-          "type": "string",
-          "default": "",
-          "markdownDescription": "%config.claude.apiKey%"
         },
         "llmTranslator.claude.model": {
           "type": "string",

@@ -3,15 +3,14 @@
   "category": "LLM Translator",
   "command.openPreview.title": "Open Translation Preview",
   "command.refresh.title": "Re-translate",
+  "command.setApiKey.title": "Set API Key",
+  "command.clearApiKey.title": "Clear API Key",
   "config.provider": "The LLM provider used for translation.",
   "config.targetLanguage": "Target language for translation, e.g. 中文 / English / العربية (Arabic).",
-  "config.deepseek.apiKey": "DeepSeek API Key. Get one at https://platform.deepseek.com",
   "config.deepseek.model": "DeepSeek model name. Available: `deepseek-v4-flash` (non-thinking, good for translation), `deepseek-v4-pro` (reasoning). The legacy `deepseek-chat` / `deepseek-reasoner` will be deprecated on 2026/07/24.",
   "config.deepseek.baseUrl": "DeepSeek API base URL.",
-  "config.openai.apiKey": "OpenAI (ChatGPT) API Key.",
   "config.openai.model": "OpenAI model name. Recommended: `gpt-4.1-mini` (cost-effective), `gpt-4.1`, `gpt-5-mini` / `gpt-5` (more capable).",
   "config.openai.baseUrl": "OpenAI API base URL (can point to a compatible proxy).",
-  "config.claude.apiKey": "Anthropic (Claude) API Key.",
   "config.claude.model": "Claude model name. Recommended: `claude-sonnet-4-6` (balanced, good for translation), `claude-opus-4-8` (most capable), `claude-haiku-4-5` (fastest and cheapest).",
   "config.claude.baseUrl": "Anthropic API base URL."
 }
