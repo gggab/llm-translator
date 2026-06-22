@@ -1,9 +1,9 @@
 {
-  "name": "llm-translator",
-  "displayName": "LLM Translator",
+  "name": "llm-markdown-translator",
+  "displayName": "LLM Markdown Translator",
   "description": "%extension.description%",
-  "version": "0.0.1",
-  "publisher": "your-publisher-id",
+  "version": "0.0.2",
+  "publisher": "wentao-liao",
   "license": "MIT",
   "icon": "images/icon.png",
   "engines": {
@@ -23,10 +23,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-name/llm-translator.git"
+    "url": "https://github.com/gggab/llm-translator.git"
   },
   "bugs": {
-    "url": "https://github.com/your-name/llm-translator/issues"
+    "url": "https://github.com/gggab/llm-translator/issues"
   },
   "activationEvents": [],
   "main": "./out/extension.js",

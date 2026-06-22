@@ -5,3 +5,9 @@ scripts/**
 **/*.map
 tsconfig.json
 .gitignore
+.gitattributes
+*.vsix
+token
+**/token
+.env
+.env.*
