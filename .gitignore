@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+
+# Build output
+out/
+dist/
+*.tsbuildinfo
+
+# Packaged extension
+*.vsix
+
+# Test artifacts
+.vscode-test/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment / secrets
+.env
+.env.local
+
+# OS files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,151 @@
+{
+  "name": "llm-translator",
+  "displayName": "LLM Translator",
+  "description": "%extension.description%",
+  "version": "0.0.1",
+  "publisher": "your-publisher-id",
+  "license": "MIT",
+  "icon": "images/icon.png",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "markdown",
+    "translate",
+    "translation",
+    "llm",
+    "deepseek",
+    "claude",
+    "chatgpt"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-name/llm-translator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-name/llm-translator/issues"
+  },
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "llmTranslator.openPreview",
+        "title": "%command.openPreview.title%",
+        "category": "%category%",
+        "icon": "$(globe)"
+      },
+      {
+        "command": "llmTranslator.refresh",
+        "title": "%command.refresh.title%",
+        "category": "%category%",
+        "icon": "$(refresh)"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "llmTranslator.openPreview",
+          "when": "editorLangId == markdown",
+          "group": "navigation"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "llmTranslator.openPreview",
+          "when": "resourceLangId == markdown",
+          "group": "navigation"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "llmTranslator.openPreview",
+        "key": "ctrl+shift+\\",
+        "when": "editorLangId == markdown"
+      }
+    ],
+    "configuration": {
+      "title": "%category%",
+      "properties": {
+        "llmTranslator.provider": {
+          "type": "string",
+          "enum": [
+            "deepseek",
+            "openai",
+            "claude"
+          ],
+          "default": "deepseek",
+          "description": "%config.provider%"
+        },
+        "llmTranslator.targetLanguage": {
+          "type": "string",
+          "default": "中文",
+          "description": "%config.targetLanguage%"
+        },
+        "llmTranslator.deepseek.apiKey": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "%config.deepseek.apiKey%"
+        },
+        "llmTranslator.deepseek.model": {
+          "type": "string",
+          "default": "deepseek-v4-flash",
+          "markdownDescription": "%config.deepseek.model%"
+        },
+        "llmTranslator.deepseek.baseUrl": {
+          "type": "string",
+          "default": "https://api.deepseek.com",
+          "description": "%config.deepseek.baseUrl%"
+        },
+        "llmTranslator.openai.apiKey": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "%config.openai.apiKey%"
+        },
+        "llmTranslator.openai.model": {
+          "type": "string",
+          "default": "gpt-4.1-mini",
+          "markdownDescription": "%config.openai.model%"
+        },
+        "llmTranslator.openai.baseUrl": {
+          "type": "string",
+          "default": "https://api.openai.com",
+          "description": "%config.openai.baseUrl%"
+        },
+        "llmTranslator.claude.apiKey": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "%config.claude.apiKey%"
+        },
+        "llmTranslator.claude.model": {
+          "type": "string",
+          "default": "claude-sonnet-4-6",
+          "markdownDescription": "%config.claude.model%"
+        },
+        "llmTranslator.claude.baseUrl": {
+          "type": "string",
+          "default": "https://api.anthropic.com",
+          "description": "%config.claude.baseUrl%"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "dependencies": {
+    "markdown-it": "^14.1.0"
+  },
+  "devDependencies": {
+    "@types/markdown-it": "^14.1.2",
+    "@types/node": "^20.x",
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.4.0"
+  }
+}
