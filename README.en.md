@@ -11,6 +11,7 @@ Translate Markdown files with large language models (DeepSeek / OpenAI / Claude)
 - Translate into any target language (Chinese, English, Arabic, …).
 - Long documents are split into chunks automatically, preserving Markdown syntax, code blocks, links, and images.
 - The preview pane follows your VS Code color theme (light / dark).
+- Built-in **refresh** and **save** buttons in the preview: re-translate in one click, or save the translation next to the source file.
 
 ## Getting Started
 
@@ -29,7 +30,14 @@ With a Markdown file open, start the translation preview in any of these ways:
 - Press `Ctrl+Shift+\`.
 - Run **LLM Translator: Open Translation Preview** from the Command Palette (`Ctrl+Shift+P`).
 
-The translated, rendered Markdown opens in a pane beside your editor. Use **LLM Translator: Re-translate** to refresh it.
+The translated, rendered Markdown opens in a pane beside your editor.
+
+### Refresh and save
+
+Move your mouse over the preview pane and two buttons fade in at the top-right corner:
+
+- 🔄 **Refresh**: re-translate the current file and refresh the preview (you can also run **LLM Translator: Re-translate**).
+- 💾 **Save**: save the translation next to the source file, named `<source>.<targetLanguage>.<ext>` — e.g. `README.md` becomes `README.中文.md` when the target language is `中文`. If the target file already exists you're asked to confirm overwrite, and you can open it right after saving.
 
 ## Managing your API key
 

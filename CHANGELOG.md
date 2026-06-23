@@ -1,0 +1,26 @@
+# Changelog
+
+本扩展的所有重要变更都会记录在此文件中。
+
+格式参考 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
+
+## [0.1.0] - 2026-06-23
+
+### 新增
+
+- 预览窗口右上角新增**浮动操作按钮**:鼠标移入预览页时淡入显示,移出时淡出。
+  - 🔄 **刷新**:重新翻译当前文件并刷新预览。
+  - 💾 **保存**:将翻译结果保存到源文件**同级目录**,文件名为「源文件名.目标语言.扩展名」(例如 `README.md` → `README.中文.md`)。
+- 保存时若目标文件已存在,会弹出确认框避免误覆盖;保存成功后可一键打开新文件。
+
+## [0.0.3]
+
+### 变更
+
+- API Key 改为加密保存到系统密钥库(SecretStorage),不再以明文写入 `settings.json`。
+
+## [0.0.2]
+
+- 首个发布到 Marketplace 的版本。
+
+[0.1.0]: https://github.com/gggab/llm-translator/releases/tag/v0.1.0

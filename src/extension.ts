@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import * as path from 'path';
 import { translateMarkdown } from './translator';
 import { renderResultHtml, renderLoadingHtml, renderErrorHtml } from './webview';
 import {
@@ -11,6 +12,7 @@ import {
 
 let panel: vscode.WebviewPanel | undefined;
 let lastDocUri: vscode.Uri | undefined;
+let lastTranslation: string | undefined;
 let secrets: vscode.SecretStorage;
 
 export function activate(context: vscode.ExtensionContext) {
@@ -130,6 +132,8 @@ async function translateDocument(uri: vscode.Uri) {
     return;
   }
 
+  lastTranslation = undefined;
+
   ensurePanel();
   panel!.title = `Translation Preview: ${fileName}`;
   panel!.webview.html = renderLoadingHtml('Translating, please wait…');
@@ -155,6 +159,7 @@ async function translateDocument(uri: vscode.Uri) {
       }
     );
 
+    lastTranslation = result;
     if (panel) {
       panel.webview.html = renderResultHtml(result);
     }
@@ -176,11 +181,77 @@ function ensurePanel() {
     'llmTranslatorPreview',
     'Translation Preview',
     { viewColumn: vscode.ViewColumn.Beside, preserveFocus: true },
-    { enableScripts: false, retainContextWhenHidden: true }
+    { enableScripts: true, retainContextWhenHidden: true }
   );
+  // 处理预览页内浮动按钮发来的消息(刷新 / 保存)。
+  panel.webview.onDidReceiveMessage((msg) => {
+    if (msg?.command === 'save') {
+      saveTranslation();
+    } else if (msg?.command === 'refresh') {
+      if (lastDocUri) {
+        translateDocument(lastDocUri);
+      }
+    }
+  });
   panel.onDidDispose(() => {
     panel = undefined;
   });
+}
+
+/**
+ * 将翻译结果保存到源文件同级目录,文件名为「源文件名.目标语言.扩展名」。
+ * 例如 README.md 翻译成中文后保存为 README.中文.md。
+ */
+async function saveTranslation() {
+  if (!lastTranslation || !lastDocUri) {
+    vscode.window.showWarningMessage('暂无可保存的翻译结果,请先完成一次翻译。');
+    return;
+  }
+
+  const targetLanguage = vscode.workspace
+    .getConfiguration('llmTranslator')
+    .get<string>('targetLanguage', '中文')
+    .trim();
+  // 过滤掉文件名中的非法字符,避免目标语言里含有 \ / : * ? " < > | 等
+  const suffix = targetLanguage.replace(/[\\/:*?"<>|]/g, '_') || 'translated';
+
+  const dir = path.dirname(lastDocUri.fsPath);
+  const ext = path.extname(lastDocUri.fsPath);
+  const base = path.basename(lastDocUri.fsPath, ext);
+  const targetUri = vscode.Uri.file(path.join(dir, `${base}.${suffix}${ext}`));
+
+  // 若目标文件已存在,先确认是否覆盖
+  let exists = false;
+  try {
+    await vscode.workspace.fs.stat(targetUri);
+    exists = true;
+  } catch {
+    exists = false;
+  }
+  if (exists) {
+    const choice = await vscode.window.showWarningMessage(
+      `文件 ${path.basename(targetUri.fsPath)} 已存在,是否覆盖?`,
+      { modal: true },
+      '覆盖'
+    );
+    if (choice !== '覆盖') {
+      return;
+    }
+  }
+
+  try {
+    await vscode.workspace.fs.writeFile(targetUri, Buffer.from(lastTranslation, 'utf8'));
+    const open = await vscode.window.showInformationMessage(
+      `已保存翻译结果到 ${path.basename(targetUri.fsPath)}`,
+      '打开'
+    );
+    if (open === '打开') {
+      const doc = await vscode.workspace.openTextDocument(targetUri);
+      await vscode.window.showTextDocument(doc);
+    }
+  } catch (err: any) {
+    vscode.window.showErrorMessage(`保存失败:${err?.message ?? String(err)}`);
+  }
 }
 
 export function deactivate() {
