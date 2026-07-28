@@ -18,5 +18,13 @@
   "config.qwen.model": "Qwen model name. Default: `qwen-plus`.",
   "config.qwen.baseUrl": "Alibaba Cloud Model Studio API base URL (without the `/v1` suffix).",
   "config.kimi.model": "Kimi model name. Default: `kimi-k2.6`.",
-  "config.kimi.baseUrl": "Moonshot AI API base URL (without the `/v1` suffix)."
+  "config.kimi.baseUrl": "Moonshot AI API base URL (without the `/v1` suffix).",
+  "config.custom.model": "Model name exposed by the OpenAI-compatible service.",
+  "config.custom.baseUrl": "OpenAI-compatible API base URL including its version path, e.g. `https://api.siliconflow.cn/v1`.",
+  "config.gemini.model": "Gemini model name. Default: `gemini-3.6-flash`.",
+  "config.gemini.baseUrl": "Google Gemini API base URL.",
+  "config.doubao.model": "Doubao model name or endpoint ID. Default: `doubao-seed-2-0-lite-260215`.",
+  "config.doubao.baseUrl": "Volcano Engine Ark API base URL.",
+  "config.minimax.model": "MiniMax model name. Default: `MiniMax-M2.7`.",
+  "config.minimax.baseUrl": "MiniMax API base URL."
 }

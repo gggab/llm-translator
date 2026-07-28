@@ -18,5 +18,13 @@
   "config.qwen.model": "千问模型名称。默认:`qwen-plus`。",
   "config.qwen.baseUrl": "阿里云百炼 API Base URL(不含 `/v1` 后缀)。",
   "config.kimi.model": "Kimi 模型名称。默认:`kimi-k2.6`。",
-  "config.kimi.baseUrl": "Moonshot AI API Base URL(不含 `/v1` 后缀)。"
+  "config.kimi.baseUrl": "Moonshot AI API Base URL(不含 `/v1` 后缀)。",
+  "config.custom.model": "OpenAI 兼容服务提供的模型名称。",
+  "config.custom.baseUrl": "包含版本路径的 OpenAI 兼容 API Base URL,例如 `https://api.siliconflow.cn/v1`。",
+  "config.gemini.model": "Gemini 模型名称。默认:`gemini-3.6-flash`。",
+  "config.gemini.baseUrl": "Google Gemini API Base URL。",
+  "config.doubao.model": "豆包模型名称或推理接入点 ID。默认:`doubao-seed-2-0-lite-260215`。",
+  "config.doubao.baseUrl": "火山方舟 API Base URL。",
+  "config.minimax.model": "MiniMax 模型名称。默认:`MiniMax-M2.7`。",
+  "config.minimax.baseUrl": "MiniMax API Base URL。"
 }

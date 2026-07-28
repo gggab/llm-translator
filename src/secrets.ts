@@ -1,8 +1,20 @@
 import * as vscode from 'vscode';
+import type { OpenAICompatibleProvider } from './provider-url';
 
-export type Provider = 'deepseek' | 'openai' | 'claude' | 'glm' | 'qwen' | 'kimi';
+export type Provider = OpenAICompatibleProvider | 'claude';
 
-export const PROVIDERS: Provider[] = ['deepseek', 'openai', 'claude', 'glm', 'qwen', 'kimi'];
+export const PROVIDERS: Provider[] = [
+  'deepseek',
+  'openai',
+  'claude',
+  'glm',
+  'qwen',
+  'kimi',
+  'custom',
+  'gemini',
+  'doubao',
+  'minimax'
+];
 
 /** SecretStorage 中保存 API Key 的键名。 */
 function secretKey(provider: Provider): string {

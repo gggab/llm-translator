@@ -41,7 +41,11 @@ async function pickProvider(placeHolder: string): Promise<Provider | undefined> 
     claude: 'Anthropic (Claude)',
     glm: '智谱 GLM',
     qwen: '通义千问',
-    kimi: 'Kimi'
+    kimi: 'Kimi',
+    custom: 'OpenAI 兼容（自定义）',
+    gemini: 'Google Gemini',
+    doubao: '豆包（火山方舟）',
+    minimax: 'MiniMax'
   };
   const items = PROVIDERS.map((p) => ({
     label: labels[p],

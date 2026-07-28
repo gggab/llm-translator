@@ -1,19 +1,10 @@
 import * as vscode from 'vscode';
+import { chatCompletionsUrl, OpenAICompatibleProvider } from './provider-url';
 
 export interface TranslateOptions {
   signal?: AbortSignal;
   onProgress?: (done: number, total: number) => void;
 }
-
-type OpenAICompatibleProvider = 'deepseek' | 'openai' | 'glm' | 'qwen' | 'kimi';
-
-const API_VERSIONS: Record<OpenAICompatibleProvider, string> = {
-  deepseek: 'v1',
-  openai: 'v1',
-  glm: 'v4',
-  qwen: 'v1',
-  kimi: 'v1'
-};
 
 /**
  * 把整篇 Markdown 翻译成目标语言。
@@ -71,6 +62,14 @@ async function callProvider(
       return callOpenAICompatible(config, 'qwen', apiKey, systemPrompt, text, signal);
     case 'kimi':
       return callOpenAICompatible(config, 'kimi', apiKey, systemPrompt, text, signal);
+    case 'custom':
+      return callOpenAICompatible(config, 'custom', apiKey, systemPrompt, text, signal);
+    case 'gemini':
+      return callOpenAICompatible(config, 'gemini', apiKey, systemPrompt, text, signal);
+    case 'doubao':
+      return callOpenAICompatible(config, 'doubao', apiKey, systemPrompt, text, signal);
+    case 'minimax':
+      return callOpenAICompatible(config, 'minimax', apiKey, systemPrompt, text, signal);
     case 'deepseek':
     default:
       return callOpenAICompatible(config, 'deepseek', apiKey, systemPrompt, text, signal);
@@ -86,14 +85,17 @@ async function callOpenAICompatible(
   text: string,
   signal?: AbortSignal
 ): Promise<string> {
-  const model = config.get<string>(`${key}.model`, '');
-  const baseUrl = config.get<string>(`${key}.baseUrl`, '').replace(/\/+$/, '');
+  const model = config.get<string>(`${key}.model`, '').trim();
+  const baseUrl = config.get<string>(`${key}.baseUrl`, '').trim();
 
   if (!apiKey) {
     throw new Error(`No API key configured for ${key}. Run the "LLM Translator: Set API Key" command.`);
   }
+  if (!model || !baseUrl) {
+    throw new Error(`Configure both llmTranslator.${key}.model and llmTranslator.${key}.baseUrl.`);
+  }
 
-  const res = await fetch(`${baseUrl}/${API_VERSIONS[key]}/chat/completions`, {
+  const res = await fetch(chatCompletionsUrl(key, baseUrl), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

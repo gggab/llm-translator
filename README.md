@@ -2,12 +2,12 @@
 
 # LLM Translator
 
-用大模型(DeepSeek / OpenAI / Claude / GLM / 千问 / Kimi)翻译 Markdown 文件,并在侧边预览窗口中查看渲染后的结果——无需离开编辑器。
+用大模型(DeepSeek / OpenAI / Claude / GLM / 千问 / Kimi / Gemini / 豆包 / MiniMax)翻译 Markdown 文件,并在侧边预览窗口中查看渲染后的结果——无需离开编辑器。
 
 ## 功能特性
 
 - 一键翻译当前正在编辑的 Markdown 文件。
-- 自由选择服务商:**DeepSeek**、**OpenAI(ChatGPT)**、**Anthropic(Claude)**、**智谱 GLM**、**通义千问**、**Kimi**。
+- 支持 DeepSeek、OpenAI、Claude、GLM、千问、Kimi、Gemini、豆包、MiniMax 及自定义 OpenAI 兼容服务。
 - 可翻译成任意目标语言(中文、英文、阿拉伯语……)。
 - 长文档自动分段翻译,完整保留 Markdown 语法、代码块、链接和图片。
 - 预览窗口随 VS Code 主题自动适配明暗配色。
@@ -66,7 +66,7 @@ API Key 通过命令面板设置和删除,不在普通设置里填写,这样不�
 
 | 配置 | 说明 | 默认值 |
 | --- | --- | --- |
-| `llmTranslator.provider` | 服务商:`deepseek` / `openai` / `claude` / `glm` / `qwen` / `kimi` | `deepseek` |
+| `llmTranslator.provider` | 服务商:`deepseek` / `openai` / `claude` / `glm` / `qwen` / `kimi` / `custom` / `gemini` / `doubao` / `minimax` | `deepseek` |
 | `llmTranslator.targetLanguage` | 目标语言 | `中文` |
 | `llmTranslator.deepseek.model` / `.baseUrl` | DeepSeek 模型与接口地址 | `deepseek-v4-flash` |
 | `llmTranslator.openai.model` / `.baseUrl` | OpenAI 模型与接口地址 | `gpt-4.1-mini` |
@@ -74,6 +74,10 @@ API Key 通过命令面板设置和删除,不在普通设置里填写,这样不�
 | `llmTranslator.glm.model` / `.baseUrl` | 智谱 GLM 模型与接口地址 | `glm-4.7-flash` |
 | `llmTranslator.qwen.model` / `.baseUrl` | 通义千问模型与接口地址 | `qwen-plus` |
 | `llmTranslator.kimi.model` / `.baseUrl` | Kimi 模型与接口地址 | `kimi-k2.6` |
+| `llmTranslator.custom.model` / `.baseUrl` | 自定义 OpenAI 兼容模型与接口地址 | 无 |
+| `llmTranslator.gemini.model` / `.baseUrl` | Gemini 模型与接口地址 | `gemini-3.6-flash` |
+| `llmTranslator.doubao.model` / `.baseUrl` | 豆包模型与接口地址 | `doubao-seed-2-0-lite-260215` |
+| `llmTranslator.minimax.model` / `.baseUrl` | MiniMax 模型与接口地址 | `MiniMax-M2.7` |
 
 > API Key 不在设置中配置,而是通过 **LLM Translator: Set API Key** 命令加密保存。`baseUrl` 配置可指向兼容的代理或网关。
 

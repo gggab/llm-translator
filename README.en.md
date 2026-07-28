@@ -2,12 +2,12 @@
 
 # LLM Translator
 
-Translate Markdown files with large language models (DeepSeek / OpenAI / Claude / GLM / Qwen / Kimi) and view the rendered result in a side preview pane — without leaving your editor.
+Translate Markdown files with popular LLM APIs and view the rendered result in a side preview pane — without leaving your editor.
 
 ## Features
 
 - One-click translation of the Markdown file you're editing.
-- Choose your provider: **DeepSeek**, **OpenAI (ChatGPT)**, **Anthropic (Claude)**, **GLM**, **Qwen**, or **Kimi**.
+- Supports DeepSeek, OpenAI, Claude, GLM, Qwen, Kimi, Gemini, Doubao, MiniMax, and custom OpenAI-compatible services.
 - Translate into any target language (Chinese, English, Arabic, …).
 - Long documents are split into chunks automatically, preserving Markdown syntax, code blocks, links, and images.
 - The preview pane follows your VS Code color theme (light / dark).
@@ -66,7 +66,7 @@ API keys are set and removed through the Command Palette rather than the regular
 
 | Setting | Description | Default |
 | --- | --- | --- |
-| `llmTranslator.provider` | Provider: `deepseek` / `openai` / `claude` / `glm` / `qwen` / `kimi` | `deepseek` |
+| `llmTranslator.provider` | Provider: `deepseek` / `openai` / `claude` / `glm` / `qwen` / `kimi` / `custom` / `gemini` / `doubao` / `minimax` | `deepseek` |
 | `llmTranslator.targetLanguage` | Target language | `中文` |
 | `llmTranslator.deepseek.model` / `.baseUrl` | DeepSeek model and endpoint | `deepseek-v4-flash` |
 | `llmTranslator.openai.model` / `.baseUrl` | OpenAI model and endpoint | `gpt-4.1-mini` |
@@ -74,6 +74,10 @@ API keys are set and removed through the Command Palette rather than the regular
 | `llmTranslator.glm.model` / `.baseUrl` | GLM model and endpoint | `glm-4.7-flash` |
 | `llmTranslator.qwen.model` / `.baseUrl` | Qwen model and endpoint | `qwen-plus` |
 | `llmTranslator.kimi.model` / `.baseUrl` | Kimi model and endpoint | `kimi-k2.6` |
+| `llmTranslator.custom.model` / `.baseUrl` | Custom OpenAI-compatible model and endpoint | None |
+| `llmTranslator.gemini.model` / `.baseUrl` | Gemini model and endpoint | `gemini-3.6-flash` |
+| `llmTranslator.doubao.model` / `.baseUrl` | Doubao model and endpoint | `doubao-seed-2-0-lite-260215` |
+| `llmTranslator.minimax.model` / `.baseUrl` | MiniMax model and endpoint | `MiniMax-M2.7` |
 
 > API keys are not configured in settings — set them via the **LLM Translator: Set API Key** command, which stores them encrypted. The `baseUrl` settings let you point at a compatible proxy or gateway if needed.
 

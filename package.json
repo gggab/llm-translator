@@ -21,6 +21,9 @@
     "glm",
     "qwen",
     "kimi",
+    "gemini",
+    "doubao",
+    "minimax",
     "claude",
     "chatgpt"
   ],
@@ -92,7 +95,11 @@
             "claude",
             "glm",
             "qwen",
-            "kimi"
+            "kimi",
+            "custom",
+            "gemini",
+            "doubao",
+            "minimax"
           ],
           "default": "deepseek",
           "description": "%config.provider%"
@@ -161,6 +168,46 @@
           "type": "string",
           "default": "https://api.moonshot.cn",
           "description": "%config.kimi.baseUrl%"
+        },
+        "llmTranslator.custom.model": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "%config.custom.model%"
+        },
+        "llmTranslator.custom.baseUrl": {
+          "type": "string",
+          "default": "",
+          "description": "%config.custom.baseUrl%"
+        },
+        "llmTranslator.gemini.model": {
+          "type": "string",
+          "default": "gemini-3.6-flash",
+          "markdownDescription": "%config.gemini.model%"
+        },
+        "llmTranslator.gemini.baseUrl": {
+          "type": "string",
+          "default": "https://generativelanguage.googleapis.com",
+          "description": "%config.gemini.baseUrl%"
+        },
+        "llmTranslator.doubao.model": {
+          "type": "string",
+          "default": "doubao-seed-2-0-lite-260215",
+          "markdownDescription": "%config.doubao.model%"
+        },
+        "llmTranslator.doubao.baseUrl": {
+          "type": "string",
+          "default": "https://ark.cn-beijing.volces.com",
+          "description": "%config.doubao.baseUrl%"
+        },
+        "llmTranslator.minimax.model": {
+          "type": "string",
+          "default": "MiniMax-M2.7",
+          "markdownDescription": "%config.minimax.model%"
+        },
+        "llmTranslator.minimax.baseUrl": {
+          "type": "string",
+          "default": "https://api.minimaxi.com",
+          "description": "%config.minimax.baseUrl%"
         }
       }
     }
@@ -168,7 +215,8 @@
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./"
+    "watch": "tsc -watch -p ./",
+    "test": "npm run compile && node scripts/check-provider-urls.js"
   },
   "dependencies": {
     "markdown-it": "^14.1.0"
