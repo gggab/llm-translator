@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="mark" x1="64" y1="32" x2="64" y2="96" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#38bdf8"/>
+      <stop offset="1" stop-color="#34d399"/>
+    </linearGradient>
+  </defs>
+
+  <path
+    d="M44 0H84C111 0 128 17 128 44V84C128 111 111 128 84 128H44C17 128 0 111 0 84V44C0 17 17 0 44 0Z"
+    fill="#f8fafc"
+    stroke="#dcecf3"
+  />
+
+  <text
+    x="64"
+    y="60"
+    fill="url(#mark)"
+    font-family="'Segoe UI', sans-serif"
+    font-size="112"
+    font-weight="600"
+    text-anchor="middle"
+    dominant-baseline="central"
+  >#</text>
+</svg>
