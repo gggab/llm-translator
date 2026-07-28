@@ -38,7 +38,10 @@ async function pickProvider(placeHolder: string): Promise<Provider | undefined> 
   const labels: Record<Provider, string> = {
     deepseek: 'DeepSeek',
     openai: 'OpenAI (ChatGPT)',
-    claude: 'Anthropic (Claude)'
+    claude: 'Anthropic (Claude)',
+    glm: '智谱 GLM',
+    qwen: '通义千问',
+    kimi: 'Kimi'
   };
   const items = PROVIDERS.map((p) => ({
     label: labels[p],

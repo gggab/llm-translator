@@ -18,6 +18,9 @@
     "translation",
     "llm",
     "deepseek",
+    "glm",
+    "qwen",
+    "kimi",
     "claude",
     "chatgpt"
   ],
@@ -86,7 +89,10 @@
           "enum": [
             "deepseek",
             "openai",
-            "claude"
+            "claude",
+            "glm",
+            "qwen",
+            "kimi"
           ],
           "default": "deepseek",
           "description": "%config.provider%"
@@ -125,6 +131,36 @@
           "type": "string",
           "default": "https://api.anthropic.com",
           "description": "%config.claude.baseUrl%"
+        },
+        "llmTranslator.glm.model": {
+          "type": "string",
+          "default": "glm-4.7-flash",
+          "markdownDescription": "%config.glm.model%"
+        },
+        "llmTranslator.glm.baseUrl": {
+          "type": "string",
+          "default": "https://open.bigmodel.cn/api/paas",
+          "description": "%config.glm.baseUrl%"
+        },
+        "llmTranslator.qwen.model": {
+          "type": "string",
+          "default": "qwen-plus",
+          "markdownDescription": "%config.qwen.model%"
+        },
+        "llmTranslator.qwen.baseUrl": {
+          "type": "string",
+          "default": "https://dashscope.aliyuncs.com/compatible-mode",
+          "description": "%config.qwen.baseUrl%"
+        },
+        "llmTranslator.kimi.model": {
+          "type": "string",
+          "default": "kimi-k2.6",
+          "markdownDescription": "%config.kimi.model%"
+        },
+        "llmTranslator.kimi.baseUrl": {
+          "type": "string",
+          "default": "https://api.moonshot.cn",
+          "description": "%config.kimi.baseUrl%"
         }
       }
     }

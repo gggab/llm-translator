@@ -12,5 +12,11 @@
   "config.openai.model": "OpenAI 模型名称。推荐:`gpt-4.1-mini`(性价比)、`gpt-4.1`、`gpt-5-mini` / `gpt-5`(更强)。",
   "config.openai.baseUrl": "OpenAI API Base URL(可指向兼容代理)。",
   "config.claude.model": "Claude 模型名称。推荐:`claude-sonnet-4-6`(均衡,适合翻译)、`claude-opus-4-8`(最强)、`claude-haiku-4-5`(最快最便宜)。",
-  "config.claude.baseUrl": "Anthropic API Base URL。"
+  "config.claude.baseUrl": "Anthropic API Base URL。",
+  "config.glm.model": "GLM 模型名称。默认:`glm-4.7-flash`。",
+  "config.glm.baseUrl": "智谱 AI API Base URL(不含 `/v4` 后缀)。",
+  "config.qwen.model": "千问模型名称。默认:`qwen-plus`。",
+  "config.qwen.baseUrl": "阿里云百炼 API Base URL(不含 `/v1` 后缀)。",
+  "config.kimi.model": "Kimi 模型名称。默认:`kimi-k2.6`。",
+  "config.kimi.baseUrl": "Moonshot AI API Base URL(不含 `/v1` 后缀)。"
 }

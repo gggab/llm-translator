@@ -1,8 +1,8 @@
 import * as vscode from 'vscode';
 
-export type Provider = 'deepseek' | 'openai' | 'claude';
+export type Provider = 'deepseek' | 'openai' | 'claude' | 'glm' | 'qwen' | 'kimi';
 
-export const PROVIDERS: Provider[] = ['deepseek', 'openai', 'claude'];
+export const PROVIDERS: Provider[] = ['deepseek', 'openai', 'claude', 'glm', 'qwen', 'kimi'];
 
 /** SecretStorage 中保存 API Key 的键名。 */
 function secretKey(provider: Provider): string {

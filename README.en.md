@@ -2,12 +2,12 @@
 
 # LLM Translator
 
-Translate Markdown files with large language models (DeepSeek / OpenAI / Claude) and view the rendered result in a side preview pane — without leaving your editor.
+Translate Markdown files with large language models (DeepSeek / OpenAI / Claude / GLM / Qwen / Kimi) and view the rendered result in a side preview pane — without leaving your editor.
 
 ## Features
 
 - One-click translation of the Markdown file you're editing.
-- Choose your provider: **DeepSeek**, **OpenAI (ChatGPT)**, or **Anthropic (Claude)**.
+- Choose your provider: **DeepSeek**, **OpenAI (ChatGPT)**, **Anthropic (Claude)**, **GLM**, **Qwen**, or **Kimi**.
 - Translate into any target language (Chinese, English, Arabic, …).
 - Long documents are split into chunks automatically, preserving Markdown syntax, code blocks, links, and images.
 - The preview pane follows your VS Code color theme (light / dark).
@@ -47,7 +47,7 @@ API keys are set and removed through the Command Palette rather than the regular
 
 1. **Open the Command Palette**: press `Ctrl` + `Shift` + `P` (`Cmd` + `Shift` + `P` on Mac). An input box appears at the top of the window.
 2. **Type the command**: type `Set API Key` (typing `set api` is enough); **LLM Translator: Set API Key** shows up below — click it or press `Enter`.
-3. **Pick a provider**: choose DeepSeek / OpenAI (ChatGPT) / Anthropic (Claude) from the list.
+3. **Pick a provider** from the list.
 4. **Paste the key**: paste your API key into the input box (it's masked with dots) and press `Enter`.
 5. A "saved (encrypted)" message in the bottom-right confirms it's done.
 
@@ -66,11 +66,14 @@ API keys are set and removed through the Command Palette rather than the regular
 
 | Setting | Description | Default |
 | --- | --- | --- |
-| `llmTranslator.provider` | Provider: `deepseek` / `openai` / `claude` | `deepseek` |
+| `llmTranslator.provider` | Provider: `deepseek` / `openai` / `claude` / `glm` / `qwen` / `kimi` | `deepseek` |
 | `llmTranslator.targetLanguage` | Target language | `中文` |
 | `llmTranslator.deepseek.model` / `.baseUrl` | DeepSeek model and endpoint | `deepseek-v4-flash` |
 | `llmTranslator.openai.model` / `.baseUrl` | OpenAI model and endpoint | `gpt-4.1-mini` |
 | `llmTranslator.claude.model` / `.baseUrl` | Claude model and endpoint | `claude-sonnet-4-6` |
+| `llmTranslator.glm.model` / `.baseUrl` | GLM model and endpoint | `glm-4.7-flash` |
+| `llmTranslator.qwen.model` / `.baseUrl` | Qwen model and endpoint | `qwen-plus` |
+| `llmTranslator.kimi.model` / `.baseUrl` | Kimi model and endpoint | `kimi-k2.6` |
 
 > API keys are not configured in settings — set them via the **LLM Translator: Set API Key** command, which stores them encrypted. The `baseUrl` settings let you point at a compatible proxy or gateway if needed.
 

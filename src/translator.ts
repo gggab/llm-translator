@@ -5,6 +5,16 @@ export interface TranslateOptions {
   onProgress?: (done: number, total: number) => void;
 }
 
+type OpenAICompatibleProvider = 'deepseek' | 'openai' | 'glm' | 'qwen' | 'kimi';
+
+const API_VERSIONS: Record<OpenAICompatibleProvider, string> = {
+  deepseek: 'v1',
+  openai: 'v1',
+  glm: 'v4',
+  qwen: 'v1',
+  kimi: 'v1'
+};
+
 /**
  * 把整篇 Markdown 翻译成目标语言。
  * 长文本会按段落切块,逐块翻译后再拼接,避免超出模型上下文/输出长度。
@@ -55,16 +65,22 @@ async function callProvider(
       return callClaude(config, apiKey, systemPrompt, text, signal);
     case 'openai':
       return callOpenAICompatible(config, 'openai', apiKey, systemPrompt, text, signal);
+    case 'glm':
+      return callOpenAICompatible(config, 'glm', apiKey, systemPrompt, text, signal);
+    case 'qwen':
+      return callOpenAICompatible(config, 'qwen', apiKey, systemPrompt, text, signal);
+    case 'kimi':
+      return callOpenAICompatible(config, 'kimi', apiKey, systemPrompt, text, signal);
     case 'deepseek':
     default:
       return callOpenAICompatible(config, 'deepseek', apiKey, systemPrompt, text, signal);
   }
 }
 
-/** DeepSeek 与 OpenAI 都使用 OpenAI 兼容的 /v1/chat/completions 接口。 */
+/** 除 Claude 外的服务商都使用 OpenAI 兼容的 chat/completions 接口。 */
 async function callOpenAICompatible(
   config: vscode.WorkspaceConfiguration,
-  key: 'openai' | 'deepseek',
+  key: OpenAICompatibleProvider,
   apiKey: string,
   systemPrompt: string,
   text: string,
@@ -77,7 +93,7 @@ async function callOpenAICompatible(
     throw new Error(`No API key configured for ${key}. Run the "LLM Translator: Set API Key" command.`);
   }
 
-  const res = await fetch(`${baseUrl}/v1/chat/completions`, {
+  const res = await fetch(`${baseUrl}/${API_VERSIONS[key]}/chat/completions`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

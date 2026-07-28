@@ -2,12 +2,12 @@
 
 # LLM Translator
 
-用大模型(DeepSeek / OpenAI / Claude)翻译 Markdown 文件,并在侧边预览窗口中查看渲染后的结果——无需离开编辑器。
+用大模型(DeepSeek / OpenAI / Claude / GLM / 千问 / Kimi)翻译 Markdown 文件,并在侧边预览窗口中查看渲染后的结果——无需离开编辑器。
 
 ## 功能特性
 
 - 一键翻译当前正在编辑的 Markdown 文件。
-- 自由选择服务商:**DeepSeek**、**OpenAI(ChatGPT)**、**Anthropic(Claude)**。
+- 自由选择服务商:**DeepSeek**、**OpenAI(ChatGPT)**、**Anthropic(Claude)**、**智谱 GLM**、**通义千问**、**Kimi**。
 - 可翻译成任意目标语言(中文、英文、阿拉伯语……)。
 - 长文档自动分段翻译,完整保留 Markdown 语法、代码块、链接和图片。
 - 预览窗口随 VS Code 主题自动适配明暗配色。
@@ -47,7 +47,7 @@ API Key 通过命令面板设置和删除,不在普通设置里填写,这样不�
 
 1. **打开命令面板**:同时按下 `Ctrl` + `Shift` + `P`(Mac 上是 `Cmd` + `Shift` + `P`),窗口顶部中间会出现一个输入框。
 2. **输入命令**:在输入框里打字 `Set API Key`(打 `set api` 即可),下方会出现 **LLM Translator: Set API Key**,点它或按 `回车`。
-3. **选择服务商**:在弹出的列表里点 DeepSeek / OpenAI (ChatGPT) / Anthropic (Claude) 之一。
+3. **选择服务商**:在弹出的列表里选择对应的服务商。
 4. **粘贴 Key**:在输入框里粘贴你的 API Key(输入内容会以圆点遮挡),按 `回车`。
 5. 右下角提示「已加密保存」即完成。
 
@@ -66,11 +66,14 @@ API Key 通过命令面板设置和删除,不在普通设置里填写,这样不�
 
 | 配置 | 说明 | 默认值 |
 | --- | --- | --- |
-| `llmTranslator.provider` | 服务商:`deepseek` / `openai` / `claude` | `deepseek` |
+| `llmTranslator.provider` | 服务商:`deepseek` / `openai` / `claude` / `glm` / `qwen` / `kimi` | `deepseek` |
 | `llmTranslator.targetLanguage` | 目标语言 | `中文` |
 | `llmTranslator.deepseek.model` / `.baseUrl` | DeepSeek 模型与接口地址 | `deepseek-v4-flash` |
 | `llmTranslator.openai.model` / `.baseUrl` | OpenAI 模型与接口地址 | `gpt-4.1-mini` |
 | `llmTranslator.claude.model` / `.baseUrl` | Claude 模型与接口地址 | `claude-sonnet-4-6` |
+| `llmTranslator.glm.model` / `.baseUrl` | 智谱 GLM 模型与接口地址 | `glm-4.7-flash` |
+| `llmTranslator.qwen.model` / `.baseUrl` | 通义千问模型与接口地址 | `qwen-plus` |
+| `llmTranslator.kimi.model` / `.baseUrl` | Kimi 模型与接口地址 | `kimi-k2.6` |
 
 > API Key 不在设置中配置,而是通过 **LLM Translator: Set API Key** 命令加密保存。`baseUrl` 配置可指向兼容的代理或网关。
 
