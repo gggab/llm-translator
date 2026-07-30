@@ -1,5 +1,6 @@
 const assert = require('node:assert/strict');
 const { chatCompletionsUrl } = require('../out/provider-url');
+const { renderResultHtml } = require('../out/webview');
 
 assert.equal(
   chatCompletionsUrl('glm', 'https://open.bigmodel.cn/api/paas'),
@@ -21,3 +22,8 @@ assert.equal(
   chatCompletionsUrl('minimax', 'https://api.minimaxi.com'),
   'https://api.minimaxi.com/v1/chat/completions'
 );
+
+const preview = renderResultHtml('# translated', 'DeepSeek <model>', '中文');
+assert.match(preview, /command: 'pickProvider'/);
+assert.match(preview, /command: 'pickLanguage'/);
+assert.match(preview, /DeepSeek &lt;model&gt;/);

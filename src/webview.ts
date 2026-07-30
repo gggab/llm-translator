@@ -7,10 +7,24 @@ const md = new MarkdownIt({
 });
 
 /** 把翻译后的 Markdown 渲染成完整的 HTML 预览页面。 */
-export function renderResultHtml(markdown: string): string {
+export function renderResultHtml(
+  markdown: string,
+  model: string,
+  targetLanguage: string
+): string {
   const body = md.render(markdown);
-  const actions = `
+  return wrapHtml(renderActions(model, targetLanguage) + body);
+}
+
+function renderActions(model: string, targetLanguage: string): string {
+  return `
     <div class="actions" id="actions">
+      <button class="action-btn setting-btn" id="provider-btn" title="切换大模型" aria-label="切换大模型">
+        <span class="action-label">模型</span><span class="action-value">${escapeHtml(model)}</span>
+      </button>
+      <button class="action-btn setting-btn" id="language-btn" title="切换目标语言" aria-label="切换目标语言">
+        <span class="action-label">语言</span><span class="action-value">${escapeHtml(targetLanguage)}</span>
+      </button>
       <button class="action-btn" id="refresh-btn" title="重新翻译">
         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
       </button>
@@ -21,6 +35,8 @@ export function renderResultHtml(markdown: string): string {
     <script>
       const vscode = acquireVsCodeApi();
       const actions = document.getElementById('actions');
+      document.getElementById('provider-btn').addEventListener('click', () => vscode.postMessage({ command: 'pickProvider' }));
+      document.getElementById('language-btn').addEventListener('click', () => vscode.postMessage({ command: 'pickLanguage' }));
       document.getElementById('refresh-btn').addEventListener('click', () => vscode.postMessage({ command: 'refresh' }));
       document.getElementById('save-btn').addEventListener('click', () => vscode.postMessage({ command: 'save' }));
       // 鼠标进入预览页时显示按钮,离开时淡出
@@ -28,7 +44,6 @@ export function renderResultHtml(markdown: string): string {
       document.addEventListener('mouseleave', () => actions.classList.remove('visible'));
     </script>
   `;
-  return wrapHtml(actions + body);
 }
 
 /** 加载中页面。 */
@@ -42,8 +57,8 @@ export function renderLoadingHtml(message: string): string {
 }
 
 /** 错误页面。 */
-export function renderErrorHtml(message: string): string {
-  return wrapHtml(`
+export function renderErrorHtml(message: string, model: string, targetLanguage: string): string {
+  return wrapHtml(renderActions(model, targetLanguage) + `
     <div class="status error">
       <h3>❌ Translation failed</h3>
       <pre>${escapeHtml(message)}</pre>
@@ -134,6 +149,18 @@ function wrapHtml(body: string): string {
     background: transparent;
   }
   .action-btn:hover { background: var(--vscode-toolbar-hoverBackground, var(--vscode-list-hoverBackground)); }
+  .setting-btn {
+    width: auto;
+    max-width: 260px;
+    padding: 0 8px;
+    gap: 6px;
+  }
+  .action-label { color: var(--vscode-descriptionForeground); }
+  .action-value {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 </style>
 </head>
 <body>

@@ -15,6 +15,19 @@ let lastDocUri: vscode.Uri | undefined;
 let lastTranslation: string | undefined;
 let secrets: vscode.SecretStorage;
 
+const PROVIDER_LABELS: Record<Provider, string> = {
+  deepseek: 'DeepSeek',
+  openai: 'OpenAI (ChatGPT)',
+  claude: 'Anthropic (Claude)',
+  glm: '智谱 GLM',
+  qwen: '通义千问',
+  kimi: 'Kimi',
+  custom: 'OpenAI 兼容（自定义）',
+  gemini: 'Google Gemini',
+  doubao: '豆包（火山方舟）',
+  minimax: 'MiniMax'
+};
+
 export function activate(context: vscode.ExtensionContext) {
   secrets = context.secrets;
 
@@ -34,22 +47,12 @@ export function activate(context: vscode.ExtensionContext) {
 
 /** 让用户选择服务商;默认选中当前配置的 provider。 */
 async function pickProvider(placeHolder: string): Promise<Provider | undefined> {
-  const current = vscode.workspace.getConfiguration('llmTranslator').get<string>('provider', 'deepseek');
-  const labels: Record<Provider, string> = {
-    deepseek: 'DeepSeek',
-    openai: 'OpenAI (ChatGPT)',
-    claude: 'Anthropic (Claude)',
-    glm: '智谱 GLM',
-    qwen: '通义千问',
-    kimi: 'Kimi',
-    custom: 'OpenAI 兼容（自定义）',
-    gemini: 'Google Gemini',
-    doubao: '豆包（火山方舟）',
-    minimax: 'MiniMax'
-  };
+  const config = vscode.workspace.getConfiguration('llmTranslator', lastDocUri);
+  const current = config.get<string>('provider', 'deepseek');
   const items = PROVIDERS.map((p) => ({
-    label: labels[p],
+    label: PROVIDER_LABELS[p],
     description: p === current ? '$(check) 当前服务商' : undefined,
+    detail: config.get<string>(`${p}.model`, '').trim() || '未配置模型',
     provider: p
   }));
   const picked = await vscode.window.showQuickPick(items, { placeHolder });
@@ -129,8 +132,11 @@ async function translateDocument(uri: vscode.Uri) {
   const source = document.getText();
   const fileName = uri.path.split('/').pop() ?? 'README';
 
-  const config = vscode.workspace.getConfiguration('llmTranslator');
+  const config = vscode.workspace.getConfiguration('llmTranslator', uri);
   const provider = config.get<Provider>('provider', 'deepseek');
+  const model = config.get<string>(`${provider}.model`, '').trim() || '未配置模型';
+  const targetLanguage = config.get<string>('targetLanguage', '中文').trim() || '中文';
+  const modelLabel = `${PROVIDER_LABELS[provider] ?? provider} · ${model}`;
   const apiKey = await resolveApiKey(provider);
   if (!apiKey) {
     vscode.window.showWarningMessage(
@@ -168,12 +174,12 @@ async function translateDocument(uri: vscode.Uri) {
 
     lastTranslation = result;
     if (panel) {
-      panel.webview.html = renderResultHtml(result);
+      panel.webview.html = renderResultHtml(result, modelLabel, targetLanguage);
     }
   } catch (err: any) {
     const message = err?.message ?? String(err);
     if (panel) {
-      panel.webview.html = renderErrorHtml(message);
+      panel.webview.html = renderErrorHtml(message, modelLabel, targetLanguage);
     }
     vscode.window.showErrorMessage(`Translation failed: ${message}`);
   }
@@ -190,19 +196,77 @@ function ensurePanel() {
     { viewColumn: vscode.ViewColumn.Beside, preserveFocus: true },
     { enableScripts: true, retainContextWhenHidden: true }
   );
-  // 处理预览页内浮动按钮发来的消息(刷新 / 保存)。
-  panel.webview.onDidReceiveMessage((msg) => {
-    if (msg?.command === 'save') {
-      saveTranslation();
-    } else if (msg?.command === 'refresh') {
-      if (lastDocUri) {
-        translateDocument(lastDocUri);
+  // 处理预览页内浮动按钮发来的消息。
+  panel.webview.onDidReceiveMessage(async (msg) => {
+    try {
+      if (msg?.command === 'save') {
+        await saveTranslation();
+      } else if (msg?.command === 'refresh') {
+        if (lastDocUri) {
+          await translateDocument(lastDocUri);
+        }
+      } else if (msg?.command === 'pickProvider') {
+        await switchProvider();
+      } else if (msg?.command === 'pickLanguage') {
+        await switchTargetLanguage();
       }
+    } catch (err: any) {
+      vscode.window.showErrorMessage(`操作失败:${err?.message ?? String(err)}`);
     }
   });
   panel.onDidDispose(() => {
     panel = undefined;
   });
+}
+
+async function switchProvider() {
+  const provider = await pickProvider('选择翻译使用的大模型');
+  if (!provider || !lastDocUri) {
+    return;
+  }
+  const config = vscode.workspace.getConfiguration('llmTranslator', lastDocUri);
+  if (provider === config.get<Provider>('provider', 'deepseek')) {
+    return;
+  }
+  if (!(await resolveApiKey(provider))) {
+    return;
+  }
+  await updateSetting(config, 'provider', provider);
+  await translateDocument(lastDocUri);
+}
+
+async function switchTargetLanguage() {
+  if (!lastDocUri) {
+    return;
+  }
+  const config = vscode.workspace.getConfiguration('llmTranslator', lastDocUri);
+  const current = config.get<string>('targetLanguage', '中文').trim() || '中文';
+  const targetLanguage = await vscode.window.showInputBox({
+    title: '切换目标语言',
+    prompt: '输入目标语言，例如：中文、English、العربية',
+    value: current,
+    valueSelection: [0, current.length],
+    ignoreFocusOut: true
+  });
+  if (!targetLanguage?.trim() || targetLanguage.trim() === current) {
+    return;
+  }
+  await updateSetting(config, 'targetLanguage', targetLanguage.trim());
+  await translateDocument(lastDocUri);
+}
+
+async function updateSetting(
+  config: vscode.WorkspaceConfiguration,
+  key: string,
+  value: string
+) {
+  const inspected = config.inspect(key);
+  const target = inspected?.workspaceFolderValue !== undefined
+    ? vscode.ConfigurationTarget.WorkspaceFolder
+    : inspected?.workspaceValue !== undefined
+      ? vscode.ConfigurationTarget.Workspace
+      : vscode.ConfigurationTarget.Global;
+  await config.update(key, value, target);
 }
 
 /**

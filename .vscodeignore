@@ -7,6 +7,7 @@ tsconfig.json
 .gitignore
 .gitattributes
 *.vsix
+images/icon-source.svg
 token
 **/token
 .env
