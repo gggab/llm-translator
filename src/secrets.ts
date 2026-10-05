@@ -13,7 +13,8 @@ export const PROVIDERS: Provider[] = [
   'custom',
   'gemini',
   'doubao',
-  'minimax'
+  'minimax',
+  'grok'
 ];
 
 /** SecretStorage 中保存 API Key 的键名。 */

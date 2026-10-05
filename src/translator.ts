@@ -70,6 +70,8 @@ async function callProvider(
       return callOpenAICompatible(config, 'doubao', apiKey, systemPrompt, text, signal);
     case 'minimax':
       return callOpenAICompatible(config, 'minimax', apiKey, systemPrompt, text, signal);
+    case 'grok':
+      return callOpenAICompatible(config, 'grok', apiKey, systemPrompt, text, signal);
     case 'deepseek':
     default:
       return callOpenAICompatible(config, 'deepseek', apiKey, systemPrompt, text, signal);
@@ -95,6 +97,16 @@ async function callOpenAICompatible(
     throw new Error(`Configure both llmTranslator.${key}.model and llmTranslator.${key}.baseUrl.`);
   }
 
+  let parameters: Record<string, unknown> = { temperature: 0.2 };
+  if ((key === 'openai' && model === 'gpt-6-luna') || (key === 'grok' && model === 'grok-4.3')) {
+    parameters.reasoning_effort = 'none';
+  } else if (key === 'kimi' && model === 'kimi-k2.6') {
+    // K2.6 rejects temperature 0.2; use its non-thinking mode's default temperature.
+    parameters = { thinking: { type: 'disabled' } };
+  } else if ((key === 'deepseek' && model === 'deepseek-flash') || (key === 'minimax' && model === 'MiniMax-M3')) {
+    parameters.thinking = { type: 'disabled' };
+  }
+
   const res = await fetch(chatCompletionsUrl(key, baseUrl), {
     method: 'POST',
     headers: {
@@ -103,7 +115,7 @@ async function callOpenAICompatible(
     },
     body: JSON.stringify({
       model,
-      temperature: 0.2,
+      ...parameters,
       messages: [
         { role: 'system', content: systemPrompt },
         { role: 'user', content: text }
@@ -132,7 +144,7 @@ async function callClaude(
   text: string,
   signal?: AbortSignal
 ): Promise<string> {
-  const model = config.get<string>('claude.model', 'claude-sonnet-4-6');
+  const model = config.get<string>('claude.model', 'claude-haiku-4-5');
   const baseUrl = config.get<string>('claude.baseUrl', 'https://api.anthropic.com').replace(/\/+$/, '');
 
   if (!apiKey) {

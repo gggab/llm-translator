@@ -4,6 +4,17 @@
 
 格式参考 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [Unreleased]
+
+### 新增
+
+- 支持 xAI Grok,默认使用成本较低的 `grok-4.3`,可通过设置、密钥管理及预览页切换。
+
+### 变更
+
+- 更新 DeepSeek、OpenAI、Claude、千问、Gemini、豆包及 MiniMax 的默认模型;GLM 和 Kimi 保留现有默认值。
+- 为默认模型适配非思考模式与采样参数,避免 Kimi K2.6 拒绝固定的低温度参数。
+
 ## [1.1.0] - 2026-07-30
 
 ### 新增

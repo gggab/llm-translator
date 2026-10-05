@@ -7,7 +7,8 @@ export type OpenAICompatibleProvider =
   | 'custom'
   | 'gemini'
   | 'doubao'
-  | 'minimax';
+  | 'minimax'
+  | 'grok';
 
 const CHAT_COMPLETIONS_PATHS: Record<OpenAICompatibleProvider, string> = {
   deepseek: 'v1/chat/completions',
@@ -18,7 +19,8 @@ const CHAT_COMPLETIONS_PATHS: Record<OpenAICompatibleProvider, string> = {
   custom: 'chat/completions',
   gemini: 'v1beta/openai/chat/completions',
   doubao: 'api/v3/chat/completions',
-  minimax: 'v1/chat/completions'
+  minimax: 'v1/chat/completions',
+  grok: 'v1/chat/completions'
 };
 
 export function chatCompletionsUrl(provider: OpenAICompatibleProvider, baseUrl: string): string {

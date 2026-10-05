@@ -25,7 +25,8 @@ const PROVIDER_LABELS: Record<Provider, string> = {
   custom: 'OpenAI 兼容（自定义）',
   gemini: 'Google Gemini',
   doubao: '豆包（火山方舟）',
-  minimax: 'MiniMax'
+  minimax: 'MiniMax',
+  grok: 'xAI (Grok)'
 };
 
 export function activate(context: vscode.ExtensionContext) {
